@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NavParams, ModalController} from '@ionic/angular';
+import { Message } from '../../models/message';
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -7,14 +9,24 @@ import {NavParams, ModalController} from '@ionic/angular';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
-  public name: string;
-  public messages = ['puto el que lo lea'];
-  public message: string;
+  public chat: any;
+  public messages = [];
+  // public message: Message;
+  public msg: string;
 
-  constructor(private navParams: NavParams, private modal: ModalController) { }
+  public room: any;
+
+  constructor(private navParams: NavParams, private modal: ModalController, private chatService: ChatService) { }
 
   ngOnInit() {
-    this.name = this.navParams.get('name');
+    // this.name = this.navParams.get('name');
+    this.chatService.getChatRoom(this.chat.id).subscribe(room => {
+      console.log(room);
+      this.room = room;
+
+
+    });
+    this.chat = this.navParams.get('chat');
   }
 
   closeChat() {
@@ -22,8 +34,14 @@ export class ChatComponent implements OnInit {
   }
 
   sendMessage() {
-    this.messages.push(this.message);
-    this.message = '';
+    // this.messages.push(this.message);
+    const mensa: Message = {
+      content : this.msg,
+      tytpe: 'text',
+      date: new Date()
+    };
+    this.chatService.sendMessageToFirebase(mensa, this.chat.id);
+
   }
 
 }
