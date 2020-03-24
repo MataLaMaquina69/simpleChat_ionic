@@ -4,7 +4,7 @@ import { Message } from '../../models/message';
 import { ChatService } from '../../services/chat.service';
 
 @Component({
-  selector: 'app-chat',
+  selector: 'app-chat , date-pipe',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
